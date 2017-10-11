@@ -24,8 +24,7 @@ def check_midnighter(user_info, start_hour=0, stop_hour=5):
     user_timezone = pytz.timezone(user_info['timezone'])
     attempt_time_utc = datetime.utcfromtimestamp(user_info['timestamp'])
     return bool(pytz.utc.localize(attempt_time_utc, is_dst=None).astimezone(
-        user_timezone).hour in range(
-        start_hour, stop_hour))
+        user_timezone).hour in range(start_hour, stop_hour))
 
 
 def output_users_to_console(midnigh_users):
