@@ -23,7 +23,7 @@ def load_attempts():
                 'timezone': attempt['timezone'],
             }
         if start_page < number_of_pages:
-            start_page = start_page + 1
+            start_page += 1
         else:
             break
 
