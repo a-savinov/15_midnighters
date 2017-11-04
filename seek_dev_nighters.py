@@ -20,22 +20,21 @@ def load_attempts():
             }
 
 
-def check_midnighter(user_info, start_hour=0, stop_hour=5):
-    user_timezone = pytz.timezone(user_info['timezone'])
-    attempt_time_utc = datetime.utcfromtimestamp(user_info['timestamp'])
-    return bool(pytz.utc.localize(attempt_time_utc, is_dst=None).astimezone(
-        user_timezone).hour in range(start_hour, stop_hour))
+def check_midnighter(attempt_info, start_hour=0, stop_hour=5):
+    user_timezone = pytz.timezone(attempt_info['timezone'])
+    attempt_time_utc = datetime.utcfromtimestamp(attempt_info['timestamp'])
+    attempt_hour = pytz.utc.localize(attempt_time_utc, is_dst=None).astimezone(
+        user_timezone).hour
+    return start_hour <= attempt_hour < stop_hour
 
 
-def output_users_to_console(midnigh_users):
+def output_users_to_console(midnigh_users_name):
     print('This devman users are owls:')
-    for midnigh_user in midnigh_users:
-        print(midnigh_user)
+    for midnigh_user_name in midnigh_users_name:
+        print(midnigh_user_name)
 
 if __name__ == '__main__':
-    generator = load_attempts()
-    midnigh_users = set()
-    midnigh_users = {user['username'] for user in generator if user[
-        'timestamp'] and check_midnighter(user)}
-    output_users_to_console(midnigh_users)
-
+    attempts = load_attempts()
+    midnigh_users_name = {attempt['username'] for attempt in attempts if
+                          attempt['timestamp'] and check_midnighter(attempt)}
+    output_users_to_console(midnigh_users_name)
